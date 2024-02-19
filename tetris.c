@@ -56,6 +56,40 @@ void freeTetGame(TetGame* tetg) {  // when we free memory from base game structu
     };
 };
 
+void moveFigureDown(TetGame* tetg) {  // procedure for moving figure down
+    tetg->figure->y++;  // enough just to increase y coordinate(figure) by 1
+};
+
+void moveFigureUp(TetGame* tetg) {  // procedure for moving figure up
+    tetg->figure->y--;  // enough just to discrease y coordinate(figure) by 1
+};
+
+void moveFigureLeft(TetGame* tetg) {  // procedure for moving figure left
+    tetg->figure->x--;  // enough to discrease x coordinate(figure) by 1
+};
+
+void moveFigureRight(TetGame* tetg) {  // procedure for moving figure right
+    tetg->figure->x++;  // enough to increase x coordinate(figure) by 1
+};
+
+int collisionTet(TetGame* tetg) {
+    TetFigure* t = tetg->figure;  // for convenient access to needed data,
+    TetField* tf = tetg->field;   // declaring variable to falling figure and game field
+    for(int i=0; i<t->size, i++)  // theoretically, collision can happend only in field of figure visualisation
+        for(int j=0; j<t->size; j++) {  // all information about 2 dimension object always saved in 1 dimensional arrays
+                                        // [j; x] == [x; y]
+            if(t->blocks[i*t->size+j]).b != 0 {  // if that figure block not empty - we have to calculate
+            int fx = t->x + j;                   //  block coordinates on the game field
+            int fy = t->y + i;
+            if(tf->blocks[fy*tf->width+fx].b != 0)  // if in the same place on field exist none empty block
+                return 1;                           // so there is collision and we returning 1
+            if(fx < 0 || fx >= tf->width || fy < 0 || fy >= tf->height)  // the same principle for collisions with field borders
+                return 1;
+            };
+        };
+    return 0;   // if there are no collisions return 0
+};
+
 void calculateTet(TetGame* tetg) { // creating the func calculating of one tact of game cycle
     if(tetg->ticks_left <= 0) {
         tetg->ticks_left = tetg->ticks;  // with moving figure we also have to update the number of ticks for next moving
@@ -86,7 +120,39 @@ void calculateTet(TetGame* tetg) { // creating the func calculating of one tact 
                 moveFigureLeft(tetg);  //  moving figure in oppositive way
             break;
 
+        case TET_PLAYER_LEFT:
+            moveFigureLeft(tetg);
+            if(collisionTet(tetg))
+                moveFigureRight;
+            break;
+
+        case TET_PLAYER_DOWN:
+            moveFigureDown(tetg);
+            if(collisionTet(tetg))
+                moveFigureUp;
+            break;
+
+        case TET_PLAYER_UP: {  //  if player move figure up - mean he is rotating it
+            TetFigure* t = rotFigure(tetg);  // init variable to contain figure after rotation
+            TetFigure* told = tetg->figure;  // init variable to contain old version
+            tetg->figure = t;
+            if(collisionTet(tetg)) {  // if collision - returning to old version and deleting new version
+                tetg->figure = told;
+                freeFigure(t);
+            };
+            else {  // if no collision do opositive
+                freeFigure(told);
+            };
+        };
+            break;
+
+        case TET_PLAYER_NOP:  // if AFK
+        default:
+            break;
     };
+
+    tetg->ticks_left--;
+
 };
 
 #endif
