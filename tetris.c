@@ -90,6 +90,33 @@ int collisionTet(TetGame* tetg) {
     return 0;   // if there are no collisions return 0
 };
 
+void plantFigure(TetGame* tetg) {  // function that define figure placement after falling
+    // this func is exec after collision, so figure can't have not zero blocks crossed the pole
+    TetFigure* t = tetg->figure;  // get the figure from link of variable tetg
+    for(int i=0; i<t->size; i++) // if figure size > 0
+        for(int j=0; j<t->size; j++)
+            if(t->blocks[i*t->size+j].b != 0) {  // if blocks != 0 - define the pole coordinates that block has and replace it data on the field
+                int fx = t->x + j;
+                int gy = t->y + i;
+                tetg->field->blocks[fy*tetg->field->width+fx].b =  // access to block[fx, fy] and copy value of b
+                        //  from variable t[i, j] to tetg->field codeblock with coordinates[fx, fy]
+                        t->blocks[i*t->size+j].b;
+            };
+};
+
+int eraseLineTet(TetGame* tetg) {  // func for erasing lines on gamefield
+    TetField* tfl = tetg->field; // copy field value from codeblock tetg to tfl for convinience
+    int count = 0;  // number of erased lines will contained in count variable
+    for(int i=tfl->hieght-1; i>=0; i--) {
+        // we will delete lines from the end and move lines down
+        while(LineFilledTet(i, tfl)) {  // while current line is filled
+            dropLineTet(i, tfl);  // delete this line and move down
+            count++;  // and add erasedlines by 1
+        };
+    };
+    return count;
+};
+
 void calculateTet(TetGame* tetg) { // creating the func calculating of one tact of game cycle
     if(tetg->ticks_left <= 0) {
         tetg->ticks_left = tetg->ticks;  // with moving figure we also have to update the number of ticks for next moving
