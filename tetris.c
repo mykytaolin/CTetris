@@ -104,6 +104,28 @@ void plantFigure(TetGame* tetg) {  // function that define figure placement afte
             };
 };
 
+int LineFilledTet(int i, TetField* tfl) {  // func for checking the line for containing objects
+    for(int j=0; j<tfl->width; j++)
+        if(tfl->block[i*tfl->width+j].b == 0)  // if we find the empty block in line return 0 if not - 1
+            return 0;
+        return 1;
+};
+
+void dropLineTet(int i; TetField* tfl) {  // procedure for droping line from field
+    if(i == 0) {  // if line 0 - we just erase objects from it
+        for(int j=0; j<tfl->width; j++)
+            tfl->block[j].b = 0;
+    }
+        else {  // if not drag the previous line and drop on the current line
+            for(int k=i; k>0; k--) {
+                for(int j=0; j<tfl->width; j++)
+                    tfl->block[k*tfl->width+j].b == tfl->block[(k-1)*tfl->width+j].b
+                    // k - index of current line; k-1 index of upper line
+                    // procedure start from the current position(k=i) to first position(k>0)
+            };
+    };
+};
+
 int eraseLineTet(TetGame* tetg) {  // func for erasing lines on gamefield
     TetField* tfl = tetg->field; // copy field value from codeblock tetg to tfl for convinience
     int count = 0;  // number of erased lines will contained in count variable
@@ -115,6 +137,40 @@ int eraseLineTet(TetGame* tetg) {  // func for erasing lines on gamefield
         };
     };
     return count;
+};
+
+TetFigure* createTetFigure(TetGame* tetg) {
+    TetFigure* t = (TetFigure*)malloc(sizeof(TetFigure));  // set the memory for structure
+    t->x = 0;
+    t->y = 0;
+    t->size = tetg->figurest->size;  // size of figure range the same as size of template
+    t->blocks = (TetBlock*)malloc(sizeof(TetBlock)*t->size*t->size);  // set memory for keeping blocks
+    return t;
+};
+
+void freeTetFigure(TetFigure*  tf) {
+    // fistly we have to free object from memory and after that free structure and descripting from memory
+    if(tf) {
+        if(tf->blocks)
+            free(tf->blocks);
+        free(tf);
+    };
+};
+
+void dropNewFigure(TetGame* tetg) {  // droping new figure
+    TetFigure* t = createTetFigure(tetg);  // creating new figure in memory
+    t->x = tetg->width/2 - t->size/2;  // set the coordinates in the middle of the field
+    t->y = 0; setting the y coordinate to 0, so the figure will appear at the top of field
+    int fnum = rand() % tetg->figurest->count;  // kind of template will take in random way from all templates
+    for(int i=0; i<t->size; i++)
+        for(int j=0; j<t->size; j++) {
+            // let's copy templates to our object range. The number of template define the movement in
+            // list of blocks which equal the taked template
+            t->blocks[i*t->size+j].b = tetg->figurest->blocks[fnum*t->size*t->size +
+                i*t->size+j].b;
+        };
+    freeFigure(tetg->figure);  // deleting the last figure and replace it with new one
+    tetg->figure = t;
 };
 
 void calculateTet(TetGame* tetg) { // creating the func calculating of one tact of game cycle
