@@ -1,6 +1,7 @@
 #ifndef CTETRIS_TETRIS_H
 #define CTETRIS_TETRIS_H
 
+#define TET_TICKS_START 30  // const for number of ticks
 typedef struct TetBlock {
     int b;
 }TetBlock;
@@ -55,9 +56,27 @@ typedef struct TetGame {
     int score;  // user's scores
 }TetGame;
 
-TetGame* createTetGame(int field_width, int field_height, int figure_size,
-                       int count, TetBlock* figures_template);  // protorype of function which init base game structure
-
+// define an algorithm of init templates
+TetFiguresT* createTetFiguresT(int count, int figures_size, TetBlock* figures_template);
+void freeTetFiguresT(TetFiguresT* tetft);
+TetField* createTetField(int width, int height);
+void freeTetField(TetField* tetf);
+TetGame* createTetGame(int field_width, int field_height, int figures_size,
+                       int count, TetBlock* figures_template);
+void freeTetGame(TetGame* tetg);
+void moveFigureDown(TetGame* tetg);
+void moveFigureUp(TetGame* tetg);
+void moveFigureLeft(TetGame* tetg);
+void moveFigureRight(TetGame* tetg);
+int collisionTet(TetGame* tetg);
+void plantFigure(TetGame* tetg);
+int LineFilledTet(int i, TetField* tfl);
+void dropLineTet(int i; TetField* tfl);
+int eraseLineTet(TetGame* tetg);
+TetFigure* createTetFigure(TetGame* tetg);
+void freeTetFigure(TetFigure*  tf);
+void dropNewFigure(TetGame* tetg);
+TetFigure* rotTetFigure(TetGame* tetg);
 void calculateTet(TetGame* tetg);
 
 

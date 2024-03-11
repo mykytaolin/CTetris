@@ -8,7 +8,7 @@
 TetFiguresT* createTetFiguresT(int count, int figures_size, TetBlock* figures_template) {
     TetFiguresT* tetft = (TetFiguresT*)malloc(sizeof(TetFiguresT));
     tetft->count = count; // number of templates
-    tetft->size = figure_size; // size of figure area
+    tetft->size = figures_size; // size of figure area
     tetft->blocks = figures_template; // size of list of blocks already define by user of our game model
 
     return tetft;
@@ -38,12 +38,17 @@ void freeTetField(TetField* tetf) {  // function to freeing memory
     };
 };
 
-TetGame* createTetGame(int field_width, int field_height, int figure_size,
+TetGame* createTetGame(int field_width, int field_height, int figures_size,
                        int count, TetBlock* figures_template) {
 
     TetGame* tetg = (TetGame*)malloc(sizeof(TetGame));
     tetg->field = createTetField(field_width, field_height);
     tetg->figurest = createTetFiguresT( count, figures_size, figures_template);
+
+    tetg->ticks = TET_TICKS_START;
+    tetg->ticks_left = TET_TICKS_START;
+    tetg->score = 0;
+    tetg->playing = TET_PLAYING;
 
     return tetg;
 };
@@ -159,7 +164,7 @@ void freeTetFigure(TetFigure*  tf) {
 
 void dropNewFigure(TetGame* tetg) {  // droping new figure
     TetFigure* t = createTetFigure(tetg);  // creating new figure in memory
-    t->x = tetg->width/2 - t->size/2;  // set the coordinates in the middle of the field
+    t->x = tetg->field->width/2 - t->size/2;  // set the coordinates in the middle of the field
     t->y = 0; setting the y coordinate to 0, so the figure will appear at the top of field
     int fnum = rand() % tetg->figurest->count;  // kind of template will take in random way from all templates
     for(int i=0; i<t->size; i++)
@@ -171,6 +176,19 @@ void dropNewFigure(TetGame* tetg) {  // droping new figure
         };
     freeFigure(tetg->figure);  // deleting the last figure and replace it with new one
     tetg->figure = t;
+};
+
+TetFigure* rotTetFigure(TetGame* tetg) {  // func for rotating figures
+    // When we rotate our figure we mentioned that the last column of figure is the first column
+    // of the figure after rotation, prelast is second and etc.
+    TetFigure* t = createTetFigure(tetg);  // creating empty figure
+    TetFigure* told = tetg->figure;  // init a pointer to last figure
+    t->x = told->x;  // coordinates are the same amd will not change after rotation
+    t->y = told->y;
+    for(int i=0; i<t->size; i++)
+        fot(int j=0; j<t->size; j++)
+            t->blocks[i*t->size+j].b = told->blocks[j*t->size+t->size-1-i].b;
+    return t;
 };
 
 void calculateTet(TetGame* tetg) { // creating the func calculating of one tact of game cycle
@@ -216,15 +234,15 @@ void calculateTet(TetGame* tetg) { // creating the func calculating of one tact 
             break;
 
         case TET_PLAYER_UP: {  //  if player move figure up - mean he is rotating it
-            TetFigure* t = rotFigure(tetg);  // init variable to contain figure after rotation
+            TetFigure* t = rotTetFigure(tetg);  // init variable to contain figure after rotation
             TetFigure* told = tetg->figure;  // init variable to contain old version
             tetg->figure = t;
             if(collisionTet(tetg)) {  // if collision - returning to old version and deleting new version
                 tetg->figure = told;
-                freeFigure(t);
+                freeTetFigure(t);
             };
             else {  // if no collision do opositive
-                freeFigure(told);
+                freeTetFigure(told);
             };
         };
             break;
