@@ -24,10 +24,10 @@ TetField* createTetField(int width, int height) {
     tetf->width = width;
     tetf->height = height;
     tetf->blocks = (TetBlock*)malloc(sizeof(TetBlock)*width*height);
-    for(int i=0, i<width*height, i++)
+    for(int i=0; i<width*height; i++)
         tetf->blocks[i].b = 0;
 
-    return testf;
+    return tetf;
 };
 
 void freeTetField(TetField* tetf) {  // function to freeing memory
@@ -174,7 +174,7 @@ void dropNewFigure(TetGame* tetg) {  // droping new figure
             t->blocks[i*t->size+j].b = tetg->figurest->blocks[fnum*t->size*t->size +
                 i*t->size+j].b;
         };
-    freeFigure(tetg->figure);  // deleting the last figure and replace it with new one
+    freeTetFigure(tetg->figure);  // deleting the last figure and replace it with new one
     tetg->figure = t;
 };
 
@@ -203,7 +203,7 @@ void calculateTet(TetGame* tetg) { // creating the func calculating of one tact 
             // add their count to user's score in the game
             tetf->score += eraseLineTet(tetg);
             dropNewFigure(tetg);
-            if collisionTet(tetg) { // if just after appearing new figure happends collision - means
+            if (collisionTet(tetg)) { // if just after appearing new figure happends collision - means
                 // there are no empty space on the field, so the game have to over
                 tetg->playing = TET_GAMEOVER; // the variable playing contain game status
                 return;

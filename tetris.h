@@ -2,16 +2,17 @@
 #define CTETRIS_TETRIS_H
 
 #define TET_TICKS_START 30  // const for number of ticks
+
 typedef struct TetBlock {
     int b;
-}TetBlock;
+} TetBlock;
 
 typedef struct TetFigure {
     int x;
     int y;
     int size;  // field behind a falling figure is a square with size of this variable
     TetBlock* blocks;  // this variable will contain the list of blocks relevant to this figure
-}TetFigure;
+} TetFigure;
 
 typedef struct TetFiguresT {  // for describing the figure we have to have:
     int count;  // number of this figures
@@ -19,14 +20,13 @@ typedef struct TetFiguresT {  // for describing the figure we have to have:
     TetBlock* blocks;  // and list of blocks,
     // block variable is variable which refers to unbreakable memory field which contain an info about,
     // all block templates
-}TetFiguresT;
+} TetFiguresT;
 
 typedef struct TetField {  // containing height and width of game field and variable which contain list of blocks
     int width;
     int height;
     TetBlock* blocks;
-
-}TetField;
+} TetField;
 
 enum {  // list of const for game status
     TET_GAMEOVER = 0,
@@ -43,7 +43,7 @@ enum {  // constants describing player's actions
 
 typedef struct TetPlayer {  // structure describe player actions
     int action;
-}TetPlayer;
+} TetPlayer;
 
 typedef struct TetGame {
     TetField* field;  // information about game field and info about block on it
@@ -71,7 +71,7 @@ void moveFigureRight(TetGame* tetg);
 int collisionTet(TetGame* tetg);
 void plantFigure(TetGame* tetg);
 int LineFilledTet(int i, TetField* tfl);
-void dropLineTet(int i; TetField* tfl);
+void dropLineTet(int i, TetField* tfl);
 int eraseLineTet(TetGame* tetg);
 TetFigure* createTetFigure(TetGame* tetg);
 void freeTetFigure(TetFigure*  tf);

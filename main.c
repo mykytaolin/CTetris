@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "tetris.h"
 
+
 // init global variable which have a templates of figures
 // every figure will set in some area 5x5 blocks, where
 // 0 - empty figure blocks, 1 - not empty
@@ -68,8 +69,8 @@ void PrintTetGame(TetGame* tetg) {
 int main(int argc, char* argv[]) {
     TetGame* tetg = createTetGame(34, 30, 5, 6, tet_templates);
     TetPlayer playing;
-    player.action = TET_PLAYER_NOP;
-    tetg->player = &player;
+    playing.action = TET_PLAYER_NOP;
+    tetg->player = &playing;
 
     while(tetg->playing != TET_GAMEOVER) {
         calculateTet(tetg);

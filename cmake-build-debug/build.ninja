@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: untitled1
+# Project: CTetris
 # Configurations: Debug
 # =============================================================================
 
@@ -41,43 +41,43 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = C$:/Users/olinm/CLionProjects/CTetris/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target untitled1
+# Object build statements for EXECUTABLE target tetris
 
 
 #############################################
-# Order-only phony target for untitled1
+# Order-only phony target for tetris
 
-build cmake_object_order_depends_target_untitled1: phony || CMakeFiles/untitled1.dir
+build cmake_object_order_depends_target_tetris: phony || CMakeFiles/tetris.dir
 
-build CMakeFiles/untitled1.dir/main.c.obj: C_COMPILER__untitled1_unscanned_Debug C$:/Users/olinm/CLionProjects/CTetris/main.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles\untitled1.dir\main.c.obj.d
+build CMakeFiles/tetris.dir/main.c.obj: C_COMPILER__tetris_unscanned_Debug C$:/Users/olinm/CLionProjects/CTetris/main.c || cmake_object_order_depends_target_tetris
+  DEP_FILE = CMakeFiles\tetris.dir\main.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\untitled1.dir
-  OBJECT_FILE_DIR = CMakeFiles\untitled1.dir
+  OBJECT_DIR = CMakeFiles\tetris.dir
+  OBJECT_FILE_DIR = CMakeFiles\tetris.dir
 
-build CMakeFiles/untitled1.dir/tetris.c.obj: C_COMPILER__untitled1_unscanned_Debug C$:/Users/olinm/CLionProjects/CTetris/tetris.c || cmake_object_order_depends_target_untitled1
-  DEP_FILE = CMakeFiles\untitled1.dir\tetris.c.obj.d
+build CMakeFiles/tetris.dir/tetris.c.obj: C_COMPILER__tetris_unscanned_Debug C$:/Users/olinm/CLionProjects/CTetris/tetris.c || cmake_object_order_depends_target_tetris
+  DEP_FILE = CMakeFiles\tetris.dir\tetris.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\untitled1.dir
-  OBJECT_FILE_DIR = CMakeFiles\untitled1.dir
+  OBJECT_DIR = CMakeFiles\tetris.dir
+  OBJECT_FILE_DIR = CMakeFiles\tetris.dir
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target untitled1
+# Link build statements for EXECUTABLE target tetris
 
 
 #############################################
-# Link the executable untitled1.exe
+# Link the executable tetris.exe
 
-build untitled1.exe: C_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/main.c.obj CMakeFiles/untitled1.dir/tetris.c.obj
+build tetris.exe: C_EXECUTABLE_LINKER__tetris_Debug CMakeFiles/tetris.dir/main.c.obj CMakeFiles/tetris.dir/tetris.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\untitled1.dir
+  OBJECT_DIR = CMakeFiles\tetris.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = untitled1.exe
-  TARGET_IMPLIB = libuntitled1.dll.a
-  TARGET_PDB = untitled1.exe.dbg
+  TARGET_FILE = tetris.exe
+  TARGET_IMPLIB = libtetris.dll.a
+  TARGET_PDB = tetris.exe.dbg
 
 
 #############################################
@@ -105,7 +105,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build untitled1: phony untitled1.exe
+build tetris: phony tetris.exe
 
 # =============================================================================
 # Folder targets.
@@ -115,7 +115,7 @@ build untitled1: phony untitled1.exe
 #############################################
 # Folder: C:/Users/olinm/CLionProjects/CTetris/cmake-build-debug
 
-build all: phony untitled1.exe
+build all: phony tetris.exe
 
 # =============================================================================
 # Built-in targets

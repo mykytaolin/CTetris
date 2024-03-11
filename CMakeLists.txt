@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
-project(untitled1 C)
+project(CTetris C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(untitled1 main.c
-        tetris.h
-        tetris.c)
+add_executable(tetris main.c tetris.c tetris.h)
